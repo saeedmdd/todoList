@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(static function (Router $router) {
                     $router->middleware(["auth:sanctum"])
                         ->prefix("task")
+                        ->name("task.")
                         ->group(base_path("app/routes/api/v1/task.php"));
                     $router->middleware(["throttle:api"])
                         ->prefix('user')

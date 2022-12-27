@@ -39,13 +39,7 @@ class TaskController extends ApiController
      */
     public function store(StoreTaskRequest $request): JsonResponse
     {
-        $task = $this->taskRepository->create([
-            "title" => $request->title,
-            "description" => $request->description,
-            "color" => $request->color,
-            "done_date" => $request->starts_at,
-            "user_id" => auth()->user()->id
-        ]);
+        $task = $this->taskRepository->create(array_merge($request->validated(), ["user_id" => auth()->user()->id]));
 
         return self::success(
             message: "task created successfully",
@@ -76,12 +70,7 @@ class TaskController extends ApiController
     public function update(UpdateTaskRequest $request, Task $task): JsonResponse
     {
         $this->authorize("user-task", $task);
-        return $this->taskRepository->update($task, [
-            "title" => $request->title,
-            "description" => $request->description,
-            "color" => $request->color,
-            "done_at" => $request->starts_at,
-        ]) ?
+        return $this->taskRepository->update($task, $request->validated()) ?
             self::success(message: "{$task->title} updated", code: Response::HTTP_ACCEPTED) :
             self::error(message: "server error", code: Response::HTTP_INTERNAL_SERVER_ERROR);
     }

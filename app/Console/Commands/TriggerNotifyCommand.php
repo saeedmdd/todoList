@@ -30,7 +30,7 @@ class TriggerNotifyCommand extends Command
 
     public function handle()
     {
-        $this->taskRepository->getAll()->map(function (Task $task) {
+        $this->taskRepository->getNearFinished()->map(function (Task $task) {
             DispatchNotifyJob::dispatch($task);
         });
     }

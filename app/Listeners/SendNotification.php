@@ -18,7 +18,7 @@ class SendNotification implements ShouldQueue
      * @param NotifyUser $event
      * @return void
      */
-    public function handle(NotifyUser $event)
+    public function handle(NotifyUser $event): void
     {
         Log::info("user {$event->user->email} has been notified");
     }
